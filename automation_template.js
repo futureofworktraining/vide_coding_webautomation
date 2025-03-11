@@ -29,18 +29,18 @@ import DialogHandler from './utils/dialog_handler.js';
         // Build the automation here by puting here automation components invokes.
 
 
+        // --- YOUR CODE and INVOKED FUNCTION GOES HERE
+
 
         // AUTOMATION LOGIC END
-
-
     // DO NOT CHANGE THE EXCEPTION HANDLING SECTION
+    console.log('NO error in the process execusion. Find the latest web site HTML code below:');
     } catch (error) { // Do not edit the exception handling and finally part
         console.error('An error occurred:', error);
         if (!page) {
             console.log("Page was closed. Critical error occurred!");
         }
-    } finally { // Do not edit the exception handling and finally part
-        console.log('NO error in the process execusion. Find the latest web site HTML code below:');
+    } finally { // Do not edit the exception handling and finally part      
         if (browser && page) { 
           try {
             setTimeout(async () => {
