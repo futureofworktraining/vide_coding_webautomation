@@ -24,7 +24,7 @@ import DialogHandler from './utils/dialog_handler.js';
         await page.goto(startingURL);
 
         // AUTOMATION LOGIC
-        // Build the automation here by puting here the automation components files.
+        // Build the automation here by puting here automation components invokes.
 
 
 
