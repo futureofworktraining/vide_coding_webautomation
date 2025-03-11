@@ -38,7 +38,7 @@ import DialogHandler from './utils/dialog_handler.js';
     } finally {
         if (browser && page) { // Check if both browser and page exist
           try {
-            setTimeout(() => {
+            setTimeout(async () => {
               const clearedHTML = await page.evaluate(extractClearedHTMLFunction);
               console.log(clearedHTML);
               browser.close();
