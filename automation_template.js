@@ -13,15 +13,16 @@ import DialogHandler from './utils/dialog_handler.js';
     let page;
 
     try {
-        // DO NOT change initialization part
+        // INITIALIZATION
+        // DO NOT change INITIALIZATION PART
         browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });
         await DialogHandler.setupDialogHandler(browser); 
 
         page = await browser.newPage();
         page.setDefaultTimeout(10000);
-        // DO NOT change initialization
+        // INITIALIZATION END
 
-        const startingURL = 'https://example.com/';
+        const startingURL = 'https://example.com/'; // Replace the value of the starting URL with the one provided ny the user.
         await page.goto(startingURL);
 
         // AUTOMATION LOGIC
