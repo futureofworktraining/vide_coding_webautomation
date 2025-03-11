@@ -5,8 +5,8 @@ import fs from 'fs';
 import extractClearedHTMLFunction from './utils/get_cleared_HTML_code.js';
 import DialogHandler from './utils/dialog_handler.js';
 
-// Component import from the components folder.
-// ex.: import { componentToImport } from './components/[component to import].js';
+// Define components import from the components folder here.
+// ex.: import { componentToImport } from './components/component_to_import.js';
 
 (async () => {
     let browser;
@@ -15,17 +15,19 @@ import DialogHandler from './utils/dialog_handler.js';
     try {
         browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });
 
-        await DialogHandler.setupDialogHandler(browser); // Access via the object
+        await DialogHandler.setupDialogHandler(browser); 
 
         page = await browser.newPage();
 
-        const targetURL = 'https://acme-test.uipath.com/login';
-        await page.goto(targetURL);
+        const startingURL = '[starting URL]';
+        await page.goto(startingURL);
 
-        // Corrected: No need to pass function to page.evaluate, it can access it directly
-        const clearedHTML = await page.evaluate(extractClearedHTMLFunction);
-        console.log(clearedHTML);
+        // AUTOMATION LOGIC
+        // Put here the automation components and build the automation here.
 
+
+
+        // AUTOMATION LOGIC END
 
     } catch (error) {
         console.error('An error occurred:', error);
@@ -37,12 +39,11 @@ import DialogHandler from './utils/dialog_handler.js';
           try {
             const clearedHTML = await page.evaluate(extractClearedHTMLFunction);
             console.log(clearedHTML);
+            browser.close();
           } catch(e) {
             console.error("Error in finally:", e);
           }
 
         }
-         //No need to close the browser, just for test. 
-         // await browser?.close(); // Optional chaining for safety
     }
 })();
