@@ -40,6 +40,7 @@ import DialogHandler from './utils/dialog_handler.js';
             console.log("Page was closed. Critical error occurred!");
         }
     } finally { // Do not edit the exception handling and finally part
+        console.log('NO error in the process execusion. Find the latest web site HTML code below:');
         if (browser && page) { 
           try {
             setTimeout(async () => {
