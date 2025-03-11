@@ -120,7 +120,7 @@ export default function extractClearedHTMLFunction()
         });
         // 6. Get the final cleaned HTML after second clearing - still only UI elements
         const finalCleanedBodyHTML = virtualBodyElement.innerHTML;
-        const wrappedHTML = `<WESITE TITLE>${pageTitle}</WESITE TITLE><URL_ADDRESS>${currentURL}</URL_ADDRESS><HTML>${finalCleanedBodyHTML}</HTML>`;
+        const wrappedHTML = `<WESITE TITLE>${pageTitle}</WESITE TITLE><URL_ADDRESS>${currentURL}</URL_ADDRESS><HTML OF THE WEBPAGE>${finalCleanedBodyHTML}</HTML OF THE WEBPAGE>`;
         console.log(wrappedHTML)
         return wrappedHTML;
     }  
@@ -129,4 +129,3 @@ export default function extractClearedHTMLFunction()
 
     return clearedHTML;
 }
-
