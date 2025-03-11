@@ -38,9 +38,11 @@ import DialogHandler from './utils/dialog_handler.js';
     } finally {
         if (browser && page) { // Check if both browser and page exist
           try {
-            const clearedHTML = await page.evaluate(extractClearedHTMLFunction);
-            console.log(clearedHTML);
-            browser.close();
+            setTimeout(() => {
+              const clearedHTML = await page.evaluate(extractClearedHTMLFunction);
+              console.log(clearedHTML);
+              browser.close();
+            }, 2000); // 2000 milliseconds = 2 seconds
           } catch(e) {
             console.error("Error in finally:", e);
           }
