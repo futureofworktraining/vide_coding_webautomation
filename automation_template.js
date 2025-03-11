@@ -18,12 +18,14 @@ import DialogHandler from './utils/dialog_handler.js';
         await DialogHandler.setupDialogHandler(browser); 
 
         page = await browser.newPage();
+        await page.setViewport({ width: 1920, height: 1080 });
+        await page.setDefaultTimeout(10000);
 
         const startingURL = '[starting URL]';
         await page.goto(startingURL);
 
         // AUTOMATION LOGIC
-        // Put here the automation components and build the automation here.
+        // Build the automation here by puting here the automation components files.
 
 
 
