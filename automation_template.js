@@ -20,7 +20,7 @@ import DialogHandler from './utils/dialog_handler.js';
         page = await browser.newPage();
         await page.setDefaultTimeout(10000);
 
-        const startingURL = '[starting URL]';
+        const startingURL = '[starting URL provided by the user]';
         await page.goto(startingURL);
 
         // AUTOMATION LOGIC
