@@ -13,14 +13,15 @@ import DialogHandler from './utils/dialog_handler.js';
     let page;
 
     try {
+        // DO NOT change initialization part
         browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });
-
         await DialogHandler.setupDialogHandler(browser); 
 
         page = await browser.newPage();
-        await page.setDefaultTimeout(10000);
+        page.setDefaultTimeout(10000);
+        // DO NOT change initialization
 
-        const startingURL = '[starting URL provided by the user]';
+        const startingURL = 'https://example.com/';
         await page.goto(startingURL);
 
         // AUTOMATION LOGIC
@@ -30,6 +31,8 @@ import DialogHandler from './utils/dialog_handler.js';
 
         // AUTOMATION LOGIC END
 
+
+    // DO NOT CHANGE THE EXCEPTION HANDLING PART
     } catch (error) { // Do not edit the exception handling and finally part
         console.error('An error occurred:', error);
         if (!page) {
