@@ -14,7 +14,7 @@ import DialogHandler from './utils/dialog_handler.js';
 
     try {
         // INITIALIZATION SECTION
-        // DO NOT change INITIALIZATION SECTION
+        // DO NOT CHANGE INITIALIZATION SECTION
         browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });
         await DialogHandler.setupDialogHandler(browser); 
 
@@ -27,12 +27,12 @@ import DialogHandler from './utils/dialog_handler.js';
 
         // AUTOMATION LOGIC
         // Build the automation here by puting here automation components invokes.
-
-
-        // --- YOUR CODE and INVOKED FUNCTION GOES HERE
+        // INVOKED AUTOMATION COMPONENTS
 
 
         // AUTOMATION LOGIC END
+    
+        
     // DO NOT CHANGE THE EXCEPTION HANDLING SECTION
     console.log('NO error in the process execusion. Find the latest web site HTML code below:');
     } catch (error) { // Do not edit the exception handling and finally part
