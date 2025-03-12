@@ -1,131 +1,108 @@
-
-export default function extractClearedHTMLFunction()
-{   
-    function isUIElement(element) {
-        if (!element) return false;
-        // Check for common non-UI tags (you can extend this list)
-        const nonUITags = ['template', 'script', 'style', 'meta', 'link', 'head', 'noscript'];
-        if (nonUITags.includes(element.tagName.toLowerCase())) {
-        return false;
-        }
-        // Check if the element is hidden or not rendered (basic visibility check)
-        const style = getComputedStyle(element);
-        if (style.display === 'none' || style.visibility === 'hidden') {
-        return false;
-        }
-        // Check if the element or any of its parents has \`display: none\` or \`visibility: hidden\`
+export default function extractClearedHTMLFunction() {
+    // Helper function to determine if an element is hidden
+    function isHidden(element) {
         let currentElement = element;
         while (currentElement) {
-            const currentStyle = getComputedStyle(currentElement);
-            if (currentStyle.display === 'none' || currentStyle.visibility === 'hidden') {
-                return false;
+            const style = getComputedStyle(currentElement);
+            if (style.display === 'none' || style.visibility === 'hidden') {
+                return true;
             }
             currentElement = currentElement.parentElement;
         }
-        return true; // If it passes the checks, consider it a UI element
+        return false;
     }
-    
+
+    // Helper function to process original and cloned elements in parallel
+    function processElement(original, cloned) {
+        if (isHidden(original)) {
+            cloned.classList.add('hidden');
+        }
+        const originalChildren = Array.from(original.children);
+        const clonedChildren = Array.from(cloned.children);
+        originalChildren.forEach((origChild, index) => {
+            const clonedChild = clonedChildren[index];
+            processElement(origChild, clonedChild);
+        });
+    }
+
     function extractClearedHTML() {
-    
         const pageTitle = document.title;
         const currentURL = window.location.href;
         let bodyElement = document.body.cloneNode(true);
-    
-        // --- First Cleaning and Filtering for UI Elements ---
-    
-        // 1. Remove HTML comments
-        let commentIterator = document.createNodeIterator(
-        bodyElement,
-        NodeFilter.SHOW_COMMENT,
-        null,
-        false
-        );
+
+        // Mark hidden elements in the cloned body based on original DOM styles
+        processElement(document.body, bodyElement);
+
+        // Remove HTML comments from the cloned body
+        let commentIterator = document.createNodeIterator(bodyElement, NodeFilter.SHOW_COMMENT);
         let commentNode;
         while (commentNode = commentIterator.nextNode()) {
-        commentNode.parentNode.removeChild(commentNode);
+            commentNode.parentNode.removeChild(commentNode);
         }
-        // 2. Define tags and attributes to remove (make it configurable here if needed)
+
+        // Define tags and attributes to remove
         const tagsToRemove = ['script', 'svg', 'path', 'template'];
         const attributesToRemove = ['style', 'd', 'viewBox'];
-        // 2.1 Define attributes related to actions/scripts to remove
-        const actionAttributesToRemove = ['data-hydro-click', 'data-hydro-click-hmac', 'data-ga-click', 'onclick', 'onmouseover', 'onmouseout', 'onmouseenter', 'onmouseleave', 'onmousedown', 'onmouseup', 'onkeydown', 'onkeyup', 'onkeypress']; // Add more as needed
-        // 3. Select all elements within the cloned body
+        const actionAttributesToRemove = [
+            'data-hydro-click', 'data-hydro-click-hmac', 'data-ga-click', 
+            'onclick', 'onmouseover', 'onmouseout', 'onmouseenter', 'onmouseleave', 
+            'onmousedown', 'onmouseup', 'onkeydown', 'onkeyup', 'onkeypress'
+        ];
+
+        // First cleaning: remove specified tags and attributes
         let allElements = bodyElement.querySelectorAll('*');
-        // 4. Iterate and process elements, filtering for UI elements
         allElements.forEach(element => {
-        // Check if the element is considered a UI element (visible and not a template etc.)
-        if (!isUIElement(element)) {
-            element.remove(); // Remove non-UI elements directly
-            return; // Skip to the next element
-        }
-        // Remove specified tags
-        if (tagsToRemove.includes(element.tagName.toLowerCase())) {
-            element.remove();
-            return; // Skip to the next element after removing the current one
-        }
-        // Remove specified attributes
-        attributesToRemove.forEach(attr => {
-            if (element.hasAttribute(attr)) {
-            element.removeAttribute(attr);
+            const tagName = element.tagName.toLowerCase();
+            if (tagsToRemove.includes(tagName)) {
+                element.remove();
+            } else {
+                attributesToRemove.forEach(attr => {
+                    element.removeAttribute(attr);
+                });
+                actionAttributesToRemove.forEach(attr => {
+                    element.removeAttribute(attr);
+                });
             }
         });
-        // Remove action-related attributes
-        actionAttributesToRemove.forEach(actionAttr => {
-            if (element.hasAttribute(actionAttr)) {
-            element.removeAttribute(actionAttr);
-            }
-        });
-        });
-        // 5. Get the first cleaned HTML (acting as virtual DOM) - now only UI elements
+
+        // Get the cleaned HTML after first pass
         let cleanedBodyHTML = bodyElement.innerHTML;
-        // --- Second Cleaning (on the virtual DOM / cleaned HTML) ---
-        // Create a dummy DOM element to represent the virtual DOM
+
+        // Second cleaning on a virtual DOM
         const virtualBodyElement = document.createElement('body');
         virtualBodyElement.innerHTML = cleanedBodyHTML;
-        // Re-apply comment removal - although comments should be gone from innerHTML already, just for completeness
-        commentIterator = document.createNodeIterator(
-        virtualBodyElement,
-        NodeFilter.SHOW_COMMENT,
-        null,
-        false
-        );
+
+        // Remove any remaining comments (unlikely, but for consistency)
+        commentIterator = document.createNodeIterator(virtualBodyElement, NodeFilter.SHOW_COMMENT);
         while (commentNode = commentIterator.nextNode()) {
-        commentNode.parentNode.removeChild(commentNode);
+            commentNode.parentNode.removeChild(commentNode);
         }
-        // Re-apply tag and attribute removal on the virtual DOM
-        allElements = virtualBodyElement.querySelectorAll('*'); // Re-query elements in the virtual DOM
+
+        // Re-apply tag and attribute removal
+        allElements = virtualBodyElement.querySelectorAll('*');
         allElements.forEach(element => {
-        // Double check if the element is still considered a UI element after the first round
-        if (!isUIElement(element)) {
-            element.remove(); // Remove non-UI elements in the virtual DOM as well
-            return;
-        }
-        // Remove specified tags
-        if (tagsToRemove.includes(element.tagName.toLowerCase())) {
-            element.remove();
-            return; // Skip to the next element after removing the current one
-        }
-        // Remove specified attributes
-        attributesToRemove.forEach(attr => {
-            if (element.hasAttribute(attr)) {
-            element.removeAttribute(attr);
+            const tagName = element.tagName.toLowerCase();
+            if (tagsToRemove.includes(tagName)) {
+                element.remove();
+            } else {
+                attributesToRemove.forEach(attr => {
+                    element.removeAttribute(attr);
+                });
+                actionAttributesToRemove.forEach(attr => {
+                    element.removeAttribute(attr);
+                });
             }
         });
-        // Remove action-related attributes from virtual DOM
-        actionAttributesToRemove.forEach(actionAttr => {
-            if (element.hasAttribute(actionAttr)) {
-            element.removeAttribute(actionAttr);
-            }
-        });
-        });
-        // 6. Get the final cleaned HTML after second clearing - still only UI elements
+
+        // Get the final cleaned HTML
         const finalCleanedBodyHTML = virtualBodyElement.innerHTML;
+
+        // Wrap the HTML with title and URL
         const wrappedHTML = `<WESITE TITLE>${pageTitle}</WESITE TITLE><URL_ADDRESS>${currentURL}</URL_ADDRESS><HTML OF THE WEBPAGE>${finalCleanedBodyHTML}</HTML OF THE WEBPAGE>`;
-        console.log(wrappedHTML)
+        console.log(wrappedHTML);
         return wrappedHTML;
-    }  
+    }
 
     const clearedHTML = extractClearedHTML();
-
     return clearedHTML;
 }
