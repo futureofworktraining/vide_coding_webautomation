@@ -14,21 +14,28 @@ import DialogHandler from './utils/dialog_handler.js';
     let page;
 
     try {
+        // =============================================================================
         // INITIALIZATION SECTION
         // DO NOT CHANGE INITIALIZATION SECTION
+        // =============================================================================
+
         browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });
         await DialogHandler.setupDialogHandler(browser); 
 
         page = await browser.newPage();
         page.setDefaultTimeout(10000);
+     
+        // =============================================================================
         // INITIALIZATION SECTION END
+        // =============================================================================
 
         const startingURL = 'https://example.com/'; // Replace the value of the starting URL with the one provided ny the user.
         await page.goto(startingURL);
 
+        // =============================================================================
         // AUTOMATION LOGIC
         // Build the automation here by invoking here automation components files here in this section.
-
+        // =============================================================================
 
 
 
@@ -36,10 +43,18 @@ import DialogHandler from './utils/dialog_handler.js';
 
         
 
+
+
+        // =============================================================================
         // AUTOMATION LOGIC END
-    
+        // Build the automation here by invoking here automation components files here in this section.
+        // =============================================================================  
         
-    // DO NOT CHANGE THE EXCEPTION HANDLING SECTION
+    // =============================================================================
+    // EXCEPTION HANDLING SECTION
+    // DO NOT CHANGE THIS SECTION
+    // =============================================================================     
+        
     console.log('NO error in the process execusion. Find the latest web site HTML code below:');
     } catch (error) { // Do not edit the exception handling and finally part
         console.error('An error occurred:', error);
@@ -57,7 +72,6 @@ import DialogHandler from './utils/dialog_handler.js';
           } catch(e) {
             console.error("Error in finally:", e);
           }
-
         }
     }
 })();
