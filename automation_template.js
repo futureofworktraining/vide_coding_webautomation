@@ -5,7 +5,7 @@ import fs from 'fs';
 import extractClearedHTMLFunction from './utils/get_cleared_HTML_code.js';
 import DialogHandler from './utils/dialog_handler.js';
 
-// Define components import from the components folder here.
+// import automation componets files
 // ex.: import { componentToImport } from './components/component_to_import.js';
 
 (async () => {
@@ -26,8 +26,7 @@ import DialogHandler from './utils/dialog_handler.js';
         await page.goto(startingURL);
 
         // AUTOMATION LOGIC
-        // Build the automation here by puting here automation components invokes.
-        // INVOKED AUTOMATION COMPONENTS
+        // Build the automation here by invoking here automation components files..
 
 
         // AUTOMATION LOGIC END
