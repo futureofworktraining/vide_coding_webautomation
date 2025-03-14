@@ -65,7 +65,7 @@ import DialogHandler from './utils/dialog_handler.js';
         if (browser && page) { 
           try {
             setTimeout(async () => {
-              const clearedHTML = await page.evaluate(extractClearedHTMLFunction);
+              const clearedHTML = await page.evaluate(get_cleared_HTML_code);
               console.log(clearedHTML);
               browser.close(); // DO NOT CHANGE, REMOVE OR COMMENT-OUT
             }, 2000); // 2000 milliseconds = 2 seconds
