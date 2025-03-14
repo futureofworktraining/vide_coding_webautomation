@@ -1,4 +1,4 @@
-export default function extractClearedHTMLFunction() {
+export default function get_cleared_HTML_code() {
     // Helper function to determine if an element is hidden
     function isHidden(element) {
         let currentElement = element;
