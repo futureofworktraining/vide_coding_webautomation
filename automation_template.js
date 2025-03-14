@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer';
 import fs from 'fs';
 // Do not change imports
 // import utilities
-import extractClearedHTMLFunction from './utils/get_cleared_HTML_code.js';
+import get_cleared_HTML_code from './utils/get_cleared_HTML_code.js';
 import DialogHandler from './utils/dialog_handler.js';
 
 // import automation componets files
