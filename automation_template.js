@@ -46,7 +46,7 @@ import DialogHandler from './utils/dialog_handler.js';
     // EXCEPTION HANDLING SECTION
     // DO NOT CHANGE THIS SECTION
        
-    console.log('NO error in the process execusion. Find the latest web site HTML code below:');
+    // console.log('NO error in the process execusion. Find the latest web site HTML code below:');
     } catch (error) { // Do not edit the exception handling and finally part
         console.error('An error occurred:', error);
         if (!page) {
