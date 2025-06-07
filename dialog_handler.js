@@ -2,8 +2,8 @@
 
 async function handleDialog(dialog) {
     try {
-        console.log(`Attention! There is a JS dialoge: ${dialog.type()}`);
-        console.log(`Dialog message: ${dialog.message()}`);
+        console.log(`<Important Alert> Attention! There is a JS dialoge: ${dialog.type()} </Important Alert>`);
+        console.log(`<Important Alert> Dialog message: ${dialog.message()} </Important Alert>`);
 
         // Introduce a delay before dismissing the dialog
         const delayMilliseconds = 2000; // 2 seconds (adjust as needed)
