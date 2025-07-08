@@ -4,23 +4,24 @@ import fs from 'fs';
 // Do not change imports
 // import utilities
 import get_cleared_HTML_code from './utils/get_cleared_HTML_code.js';
-import DialogHandler from './utils/dialog_handler.js';
 
 // import automation componets files
-// ex.: import { componentToImport } from './components/component_to_import.js';
+import { startRecording, stopRecording } from './utils/video_recorder.js';
 
 (async () => {
     let browser;
     let page;
+    let recorder;
 
     try {
     // INITIALIZATION SECTION
     // DO NOT CHANGE INITIALIZATION SECTION
         browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });
-        await DialogHandler.setupDialogHandler(browser); 
 
         page = await browser.newPage();
         page.setDefaultTimeout(10000);
+
+        recorder = await startRecording(page);
     // INITIALIZATION SECTION END
 
     // SETTING UP THE STARTING URL
@@ -52,12 +53,22 @@ import DialogHandler from './utils/dialog_handler.js';
         if (!page) {
             console.log("Page was closed. Critical error occurred!");
         }
-    } finally { // Do not edit the exception handling and finally part      
+    } finally { // Do not edit the exception handling and finally part
+        await stopRecording(recorder);
         if (browser && page) { 
           try {
             setTimeout(async () => {
+              await page.screenshot({ path: 'screenshots/final_screenshot.png' });
               const clearedHTML = await page.evaluate(get_cleared_HTML_code);
-              console.log(clearedHTML);
+              
+              fs.writeFile('html_code_of_the_web_page.html', clearedHTML, { encoding: 'utf8', flag: 'w' }, (err) => {
+                if (err) {
+                    console.error('Error writing file:', err);
+                } else {
+                    console.log('HTML code of the web page saved in html_code_of_the_web_page.html file');
+                }
+              });
+
               browser.close(); // DO NOT CHANGE, REMOVE OR COMMENT-OUT
             }, 2000); // 2000 milliseconds = 2 seconds
           } catch(e) {
@@ -66,3 +77,4 @@ import DialogHandler from './utils/dialog_handler.js';
         }
     }
 })();
+
