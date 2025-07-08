@@ -55,10 +55,12 @@ import { startRecording, stopRecording } from './utils/video_recorder.js';
         }
     } finally { // Do not edit the exception handling and finally part
         await stopRecording(recorder);
+        console.log('Recording of the automation execusion has been taken and saved: to "./screenshots/recording.mp4"');
         if (browser && page) { 
           try {
             setTimeout(async () => {
               await page.screenshot({ path: 'screenshots/final_screenshot.png' });
+              console.log('Screenshot of the web page has been taken and saved to "./screenshots/final_screenshot.png"');
               const clearedHTML = await page.evaluate(get_cleared_HTML_code);
               
               fs.writeFile('html_code_of_the_web_page.html', clearedHTML, { encoding: 'utf8', flag: 'w' }, (err) => {
