@@ -10,9 +10,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/futureofworktraining/v
 Invoke-WebRequest -Uri "https://raw.githubusercontent.comcom/futureofworktraining/vide_coding_webautomation/with-images-and-video/video_recorder.js" -OutFile "./utils/video_recorder.js"
 Invoke-WebRequest -Uri "https://raw.githubusercontent.comcom/futureofworktraining/vide_coding_webautomation/with-images-and-video/dialog_handler.js" -OutFile "./utils/dialog_handler.jss"
 
-
-
-
 # Install dependencies
 Write-Host "Installing dependencies..."
 npm install puppeteer xlsx
