@@ -8,8 +8,6 @@ import DialogHandler from './utils/dialog_handler.js';
 import { startRecording, stopRecording } from './utils/video_recorder.js';
 
 // import automation componets files
-import handleAlert from './components/handleAlert.js';
-import fillForm from './components/fillForm.js';
 // ex.: import { componentToImport } from './components/component_to_import.js';
 
 
@@ -33,17 +31,12 @@ import fillForm from './components/fillForm.js';
     // INITIALIZATION SECTION END
 
     // SETTING UP THE STARTING URL
-        const startingURL = 'http://127.0.0.1:5501/testingPopUpSite.html';// Replace the value of the starting URL with the one provided by the user.
+        const startingURL = 'https://example.com/';// Replace the value of the starting URL with the one provided by the user.
         await page.goto(startingURL);
 
     // AUTOMATION LOGIC START
     // Build the automation here by calling here automation components files here in this section.
 
-    // [1]. Step: Handle any alert pop-ups
-    await handleAlert(page);
-
-    // [2]. Step: Fill the web form
-    await fillForm(page, 'John Doe', 'john.doe@example.com', 'This is a test message.');
         
     // AUTOMATION LOGIC END
 
