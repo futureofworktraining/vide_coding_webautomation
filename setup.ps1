@@ -14,4 +14,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.comcom/futureofworktrainin
 Write-Host "Installing dependencies..."
 npm install puppeteer xlsx
 
+Write-Host "Setup complete. Removing setup script..."
+
+# Clean up the setup script by removing itself. This is the last command to be executed.
+Remove-Item -Path $MyInvocation.MyCommand.Path -Force
+
 Write-Host "Setup complete."
