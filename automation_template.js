@@ -18,16 +18,17 @@ import { startRecording, stopRecording } from './utils/video_recorder.js';
 
     try {
     // INITIALIZATION SECTION
-    // DO NOT CHANGE INITIALIZATION SECTION
+    // DO NOT MAKE ANY CHANGES TO INITIALIZATION SECTION
 
         browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });
-        await DialogHandler.setupDialogHandler(browser); 
+        await DialogHandler.setupDialogHandler(browser); // Do not change or remove
 
         page = await browser.newPage();
         page.setDefaultTimeout(10000);
 
         recorder = await startRecording(page);
 
+    // DO NOT MAKE ANY CHANGES TO INITIALIZATION SECTION
     // INITIALIZATION SECTION END
 
     // SETTING UP THE STARTING URL
