@@ -4,14 +4,18 @@ async function handleDialog(dialog) {
     try {
         console.log(`Attention! There is a JS dialoge: ${dialog.type()}`);
         console.log(`Dialog message: ${dialog.message()}`);
+        
+        DialogHandler.dialogDetails = {
+            type: dialog.type(),
+            message: dialog.message(),
+        };
 
         // Introduce a delay before dismissing the dialog
         const delayMilliseconds = 2000; // 2 seconds (adjust as needed)
         await new Promise(resolve => setTimeout(resolve, delayMilliseconds));
-
         await dialog.dismiss();
     } catch (error) {
-        console.error("Error handling dialog:", error);
+        console.error(error);
     }
 }
 
@@ -28,6 +32,7 @@ async function setupDialogHandler(browser) {
 const DialogHandler = {
     handleDialog,
     setupDialogHandler,
+    dialogDetails: null,
 };
 
 export default DialogHandler;
