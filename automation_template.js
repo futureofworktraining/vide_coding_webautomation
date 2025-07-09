@@ -4,9 +4,12 @@ import fs from 'fs';
 // Do not change imports
 // import utilities
 import get_cleared_HTML_code from './utils/get_cleared_HTML_code.js';
+import DialogHandler from './utils/dialog_handler.js';
+import { startRecording, stopRecording } from './utils/video_recorder.js';
 
 // import automation componets files
-import { startRecording, stopRecording } from './utils/video_recorder.js';
+// ex.: import { componentToImport } from './components/component_to_import.js';
+
 
 (async () => {
     let browser;
@@ -16,33 +19,27 @@ import { startRecording, stopRecording } from './utils/video_recorder.js';
     try {
     // INITIALIZATION SECTION
     // DO NOT CHANGE INITIALIZATION SECTION
+
         browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });
+        await DialogHandler.setupDialogHandler(browser); 
 
         page = await browser.newPage();
         page.setDefaultTimeout(10000);
 
         recorder = await startRecording(page);
+
     // INITIALIZATION SECTION END
 
     // SETTING UP THE STARTING URL
-        const startingURL = 'https://example.com/'; // Replace the value of the starting URL with the one provided ny the user.
+        const startingURL = 'https://example.com/';// Replace the value of the starting URL with the one provided by the user.
         await page.goto(startingURL);
 
-    // AUTOMATION LOGIC
-    // Build the automation here below the automation by invoking components files in this section.
+    // AUTOMATION LOGIC START
+    // Build the automation here by calling here automation components files here in this section.
 
 
-
-
-
-
-    
-
-
-
-
+        
     // AUTOMATION LOGIC END
-    // Build the automation here by invoking here automation components files here in this section.
 
     // EXCEPTION HANDLING SECTION
     // DO NOT CHANGE THIS SECTION
@@ -61,8 +58,21 @@ import { startRecording, stopRecording } from './utils/video_recorder.js';
             setTimeout(async () => {
               await page.screenshot({ path: 'screenshots/final_screenshot.png' });
               console.log('Screenshot of the web page has been taken and saved to "./screenshots/final_screenshot.png"');
-              const clearedHTML = await page.evaluate(get_cleared_HTML_code);
+              let clearedHTML = await page.evaluate(get_cleared_HTML_code);
               
+              if (DialogHandler.dialogDetails) {
+                const { type, message } = DialogHandler.dialogDetails;
+                let options = '';
+                if (type === 'alert') options = 'OK';
+                if (type === 'confirm') options = 'OK, Cancel';
+                if (type === 'prompt') options = 'OK, Cancel, Text Input';
+                const dialogNotification = `<Attention! There is a JS dialoge pop-up: {type: "${type}", message: "${message}", options: "${options}"} >\n`;
+                
+                const insertionPoint = '</URL_ADDRESS><HTML OF THE WEBPAGE>';
+                const insertionIndex = clearedHTML.indexOf(insertionPoint) + insertionPoint.length;
+                clearedHTML = clearedHTML.slice(0, insertionIndex) + '\n' + dialogNotification + clearedHTML.slice(insertionIndex);
+              }
+
               fs.writeFile('html_code_of_the_web_page.html', clearedHTML, { encoding: 'utf8', flag: 'w' }, (err) => {
                 if (err) {
                     console.error('Error writing file:', err);
@@ -79,4 +89,3 @@ import { startRecording, stopRecording } from './utils/video_recorder.js';
         }
     }
 })();
-
