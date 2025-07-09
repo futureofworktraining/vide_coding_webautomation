@@ -8,6 +8,8 @@ import DialogHandler from './utils/dialog_handler.js';
 import { startRecording, stopRecording } from './utils/video_recorder.js';
 
 // import automation componets files
+import handleAlert from './components/handleAlert.js';
+import fillForm from './components/fillForm.js';
 // ex.: import { componentToImport } from './components/component_to_import.js';
 
 
@@ -31,13 +33,17 @@ import { startRecording, stopRecording } from './utils/video_recorder.js';
     // INITIALIZATION SECTION END
 
     // SETTING UP THE STARTING URL
-        const startingURL = 'https://example.com/';// Replace the value of the starting URL with the one provided by the user.
+        const startingURL = 'http://127.0.0.1:5501/testingPopUpSite.html';// Replace the value of the starting URL with the one provided by the user.
         await page.goto(startingURL);
 
     // AUTOMATION LOGIC START
     // Build the automation here by calling here automation components files here in this section.
 
+    // [1]. Step: Handle any alert pop-ups
+    await handleAlert(page);
 
+    // [2]. Step: Fill the web form
+    await fillForm(page, 'John Doe', 'john.doe@example.com', 'This is a test message.');
         
     // AUTOMATION LOGIC END
 
@@ -60,17 +66,16 @@ import { startRecording, stopRecording } from './utils/video_recorder.js';
               console.log('Screenshot of the web page has been taken and saved to "./screenshots/final_screenshot.png"');
               let clearedHTML = await page.evaluate(get_cleared_HTML_code);
               
-              if (DialogHandler.dialogDetails) {
-                const { type, message } = DialogHandler.dialogDetails;
-                let options = '';
-                if (type === 'alert') options = 'OK';
-                if (type === 'confirm') options = 'OK, Cancel';
-                if (type === 'prompt') options = 'OK, Cancel, Text Input';
-                const dialogNotification = `<Attention! There is a JS dialoge pop-up: {type: "${type}", message: "${message}", options: "${options}"} >\n`;
+              if (DialogHandler.handledDialogs.length > 0) {
+                let allDialogNotifications = '';
+                DialogHandler.handledDialogs.forEach(dialog => {
+                  const { type, message, options, handledBy } = dialog;
+                  allDialogNotifications += `<JS_DIALOG. There was a JS dialoge pop-up: {type: "${type}", message: "${message}", options: "${options}", handledBy: "${handledBy}"} >\n`;
+                });
                 
                 const insertionPoint = '</URL_ADDRESS><HTML OF THE WEBPAGE>';
                 const insertionIndex = clearedHTML.indexOf(insertionPoint) + insertionPoint.length;
-                clearedHTML = clearedHTML.slice(0, insertionIndex) + '\n' + dialogNotification + clearedHTML.slice(insertionIndex);
+                clearedHTML = clearedHTML.slice(0, insertionIndex) + '\n' + allDialogNotifications + clearedHTML.slice(insertionIndex);
               }
 
               fs.writeFile('html_code_of_the_web_page.html', clearedHTML, { encoding: 'utf8', flag: 'w' }, (err) => {
