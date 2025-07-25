@@ -12,7 +12,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/futureofworktraining/v
 
 # Install dependencies
 Write-Host "Installing dependencies..."
-npm install puppeteer xlsx
+npm i
 
 Write-Host "Setup complete. Removing setup script..."
 
