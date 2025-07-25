@@ -38,7 +38,7 @@ import { startRecording, stopRecording, getViewport } from './utils/video_record
     // Build the automation here by calling here automation components files here in this section.
 
     
-
+    
 
 
 
@@ -46,21 +46,16 @@ import { startRecording, stopRecording, getViewport } from './utils/video_record
 
     // EXCEPTION HANDLING SECTION
     // DO NOT CHANGE THIS SECTION      
-    } catch (error) { // Do not edit the exception handling and finally part
+    } catch (error) { // DO NOT EDIT THE EXCEPTION HANDLING AND FINALLY PART
         console.error('An error occurred:', error);
         if (!page) {
             console.log("Page was closed. Critical error occurred!");
         }
-    } finally { // Do not edit the exception handling and finally part
-        
+    } finally { // DO NOT EDIT THE EXCEPTION HANDLING AND FINALLY PART
         await new Promise(resolve => setTimeout(resolve, 3000));
-
-        // --- IMPLEMENTATION START ---
         if (recorderProcess) {
             await stopRecording(recorderProcess);
         }
-        // --- IMPLEMENTATION END ---
-
         console.log('Recording of the automation execusion has been taken and saved: to "./screenshots/recording.mp4"');
         if (browser && page) { 
           try {
@@ -87,11 +82,11 @@ import { startRecording, stopRecording, getViewport } from './utils/video_record
                   console.log('HTML code of the web page saved in html_code_of_the_web_page.html file');
               }
             });
-
             await browser.close(); // DO NOT CHANGE, REMOVE OR COMMENT-OUT
           } catch(e) {
             console.error("Error in finally:", e);
           }
         }
+        // DO NOT EDIT THE EXCEPTION HANDLING AND FINALLY PART
     }
 })();
